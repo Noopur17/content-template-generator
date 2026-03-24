@@ -1,0 +1,9 @@
+{
+  "id": "marketing-card",
+  "name": "Marketing Card",
+  "fields": [
+    { "name": "header", "maxLength": 50 },
+    { "name": "body", "maxLength": 150 },
+    { "name": "cta", "maxLength": 20 }
+  ]
+}

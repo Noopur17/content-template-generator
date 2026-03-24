@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  content-backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./templates:/app/templates
+
+  content-frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - content-backend

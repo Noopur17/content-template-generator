@@ -1,0 +1,60 @@
+type Props = {
+  prompt: string;
+  tone: string;
+  audience: string;
+  assetContext: string;
+  onPromptChange: (value: string) => void;
+  onToneChange: (value: string) => void;
+  onAudienceChange: (value: string) => void;
+  onAssetContextChange: (value: string) => void;
+  onSubmit: () => void;
+  loading: boolean;
+};
+
+export default function PromptForm(props: Props) {
+  return (
+    <div className="card">
+      <div className="label">Prompt</div>
+      <textarea
+        className="textarea"
+        value={props.prompt}
+        onChange={(e) => props.onPromptChange(e.target.value)}
+        placeholder="Create homepage promotional content for a new lightweight running shoe."
+      />
+
+      <div className="label">Tone</div>
+      <select
+        className="select"
+        value={props.tone}
+        onChange={(e) => props.onToneChange(e.target.value)}
+      >
+        <option value="professional">Professional</option>
+        <option value="energetic">Energetic</option>
+        <option value="minimal">Minimal</option>
+      </select>
+
+      <div className="label">Audience</div>
+      <select
+        className="select"
+        value={props.audience}
+        onChange={(e) => props.onAudienceChange(e.target.value)}
+      >
+        <option value="general">General</option>
+        <option value="athletes">Athletes</option>
+        <option value="shoppers">Shoppers</option>
+      </select>
+
+      <div className="label">Asset Context</div>
+      <textarea
+        className="textarea"
+        value={props.assetContext}
+        onChange={(e) => props.onAssetContextChange(e.target.value)}
+        placeholder="Optional image or video description"
+      />
+
+      <button className="button" onClick={props.onSubmit} disabled={props.loading}>
+        {props.loading ? "Generating..." : "Generate Content"}
+      </button>
+    </div>
+  );
+}

@@ -1,33 +1,39 @@
-# backend/app/services/llm_service.py
-
-import os
 import requests
+from app.core.config import OLLAMA_BASE_URL, OLLAMA_MODEL
 
-OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma3")
+def generate_content(template: dict, prompt: str, tone: str, audience: str, asset_context: str | None = None):
+    fields = template.get("fields", [])
+    field_rules = "\n".join(
+        [
+            f"- {field['name']} (required={field.get('required', False)}, maxLength={field.get('maxLength', 100)})"
+            for field in fields
+        ]
+    )
 
-def generate_content(template, prompt, tone, audience):
-    field_rules = "\n".join([
-        f"- {f['name']} (max {f.get('maxLength', 100)} chars)"
-        for f in template["fields"]
-    ])
+    asset_text = asset_context if asset_context else "No asset context provided."
 
     system_prompt = f"""
 You are a structured content generator.
 
-Return ONLY valid JSON.
+Return ONLY valid raw JSON.
+Do not include markdown.
 Do not include explanations.
-Do not add markdown fences.
+Do not wrap output in triple backticks.
 
-Template: {template['name']}
+Template Name: {template.get('name')}
 
 Fields:
 {field_rules}
 
 Tone: {tone}
 Audience: {audience}
+Asset Context: {asset_text}
 
-Strictly follow field names and limits.
+Rules:
+1. Use exactly the field names provided.
+2. Respect all maxLength values.
+3. Generate polished marketing content.
+4. Return only one JSON object.
 """
 
     payload = {

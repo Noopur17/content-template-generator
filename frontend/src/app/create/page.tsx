@@ -1,45 +1,121 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getTemplates, generateContent } from "@/lib/api";
+import TemplateCard from "@/components/TemplateCard";
+import PromptForm from "@/components/PromptForm";
+import ContentPreview from "@/components/ContentPreview";
+import AssetUploader from "@/components/AssetUploader";
+import { getTemplates, generateContent, saveContent } from "@/lib/api";
 
-export default function Create() {
-  const [templates, setTemplates] = useState([]);
-  const [selected, setSelected] = useState("");
+type Template = {
+  id: string;
+  name: string;
+  description?: string;
+};
+
+export default function CreatePage() {
+  const [templates, setTemplates] = useState<Template[]>([]);
+  const [selectedTemplate, setSelectedTemplate] = useState("");
   const [prompt, setPrompt] = useState("");
-  const [result, setResult] = useState(null);
+  const [tone, setTone] = useState("professional");
+  const [audience, setAudience] = useState("general");
+  const [assetContext, setAssetContext] = useState("");
+  const [generatedContent, setGeneratedContent] = useState<Record<string, string> | null>(null);
+  const [assetInfo, setAssetInfo] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getTemplates().then(setTemplates);
+    getTemplates().then(setTemplates).catch(console.error);
   }, []);
 
   const handleGenerate = async () => {
-    const res = await generateContent({
-      template_id: selected,
-      prompt
+    if (!selectedTemplate || !prompt.trim()) {
+      alert("Please select a template and enter a prompt.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const result = await generateContent({
+        template_id: selectedTemplate,
+        prompt,
+        tone,
+        audience,
+        asset_context: assetContext
+      });
+      setGeneratedContent(result.content);
+    } catch (error: any) {
+      alert(error.message || "Generation failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    if (!generatedContent) return;
+
+    await saveContent({
+      template_id: selectedTemplate,
+      prompt,
+      tone,
+      audience,
+      asset_context: assetContext,
+      asset_info: assetInfo,
+      content: generatedContent
     });
-    setResult(res);
+
+    alert("Content saved");
   };
 
   return (
-    <div>
-      <h2>Create Content</h2>
+    <main className="container">
+      <h1>Create Content</h1>
 
-      <select onChange={(e) => setSelected(e.target.value)}>
-        <option>Select Template</option>
-        {templates.map((t: any) => (
-          <option key={t.id} value={t.id}>{t.name}</option>
+      <h2>Select Template</h2>
+      <div className="card-grid">
+        {templates.map((template) => (
+          <TemplateCard
+            key={template.id}
+            name={template.name}
+            description={template.description}
+            selected={selectedTemplate === template.id}
+            onClick={() => setSelectedTemplate(template.id)}
+          />
         ))}
-      </select>
+      </div>
 
-      <textarea
-        placeholder="Enter your prompt"
-        onChange={(e) => setPrompt(e.target.value)}
-      />
+      <div style={{ marginTop: "20px" }}>
+        <AssetUploader onUploadComplete={setAssetInfo} />
+      </div>
 
-      <button onClick={handleGenerate}>Generate</button>
+      {assetInfo && (
+        <div className="preview-box">
+          <strong>Uploaded:</strong> {assetInfo.filename}
+        </div>
+      )}
 
-      <pre>{JSON.stringify(result, null, 2)}</pre>
-    </div>
+      <div style={{ marginTop: "20px" }}>
+        <PromptForm
+          prompt={prompt}
+          tone={tone}
+          audience={audience}
+          assetContext={assetContext}
+          onPromptChange={setPrompt}
+          onToneChange={setTone}
+          onAudienceChange={setAudience}
+          onAssetContextChange={setAssetContext}
+          onSubmit={handleGenerate}
+          loading={loading}
+        />
+      </div>
+
+      <ContentPreview content={generatedContent} />
+
+      {generatedContent && (
+        <button className="button" onClick={handleSave} style={{ marginTop: "16px" }}>
+          Save Content
+        </button>
+      )}
+    </main>
   );
 }

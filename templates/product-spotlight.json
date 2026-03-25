@@ -1,9 +1,0 @@
-{
-  "id": "product-spotlight",
-  "name": "Product Spotlight",
-  "fields": [
-    { "name": "title", "maxLength": 60 },
-    { "name": "description", "maxLength": 200 },
-    { "name": "cta", "maxLength": 20 }
-  ]
-}

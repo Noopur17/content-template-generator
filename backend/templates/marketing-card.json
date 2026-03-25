@@ -1,0 +1,10 @@
+{
+  "id": "marketing-card",
+  "name": "Marketing Card",
+  "description": "Short promo card with header, body, and CTA",
+  "fields": [
+    { "name": "header", "type": "text", "required": true, "maxLength": 50 },
+    { "name": "body", "type": "text", "required": true, "maxLength": 150 },
+    { "name": "cta", "type": "text", "required": true, "maxLength": 20 }
+  ]
+}

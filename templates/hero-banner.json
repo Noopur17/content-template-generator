@@ -1,9 +1,0 @@
-{
-  "id": "hero-banner",
-  "name": "Hero Banner",
-  "fields": [
-    { "name": "headline", "maxLength": 60 },
-    { "name": "subheadline", "maxLength": 120 },
-    { "name": "cta", "maxLength": 20 }
-  ]
-}

@@ -1,35 +1,38 @@
-# Content Template Generator
+# 🚀 Content Template Generator
 
-Content Template Generator is an AI-powered platform that transforms user prompts into structured, template-driven content using free local LLMs through Ollama.
+AI-powered platform for generating structured marketing content using predefined templates and local LLMs.
 
-## Features
+---
 
-- Template-based content generation
-- Structured JSON output
-- Prompt + template driven workflow
-- Image upload support
-- Editable preview
-- Docker support
-- Free local LLM integration with Ollama
+## 🧠 Overview
 
-## Tech Stack
+Content Template Generator enables users to transform simple prompts into structured, production-ready content using template-driven AI workflows.
 
-- Frontend: Next.js
-- Backend: FastAPI
-- LLM: Ollama
-- Templates: JSON schema files
-- Storage: Local uploads + in-memory content store
+This system simulates real-world enterprise content pipelines similar to large-scale platforms used in digital commerce and content management systems.
 
-## Templates
+---
 
-- Hero Banner
-- Product Spotlight
-- Marketing Card
+## ✨ Key Features
 
-## Run locally
+- 🧩 Template-driven content generation
+- 🧠 AI-powered structured output (LLM-based)
+- 🖼️ Asset-aware content generation (image/video context)
+- 📦 Multiple content formats:
+  - Hero Banner
+  - Product Spotlight
+  - Marketing Card
+- 🔒 Schema validation and field enforcement
+- 💾 Content persistence (in-memory for now)
+- ⚡ Fully local AI using Ollama (no paid APIs)
+- 🐳 Docker-ready architecture
 
-### 1. Start Ollama
-Install Ollama, then pull a model:
+---
 
-```bash
-ollama pull llama3.2
+## 🧪 Example Output
+
+```json
+{
+  "headline": "Run Beyond Limits",
+  "subheadline": "Experience ultra-light performance designed for elite athletes",
+  "cta": "Shop Now"
+}

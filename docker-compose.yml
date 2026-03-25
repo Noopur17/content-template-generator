@@ -10,8 +10,8 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - ./uploads:/app/uploads
       - ./templates:/app/templates
+      - ./uploads:/app/uploads
 
   content-frontend:
     build: ./frontend

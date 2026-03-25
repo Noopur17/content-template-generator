@@ -1,16 +1,21 @@
-
-def validate_output(template, output_json):
+def validate_output(template: dict, output_json: dict):
     validated = {}
+    errors = []
 
-    for field in template["fields"]:
+    for field in template.get("fields", []):
         name = field["name"]
+        required = field.get("required", False)
+        max_length = field.get("maxLength")
+        value = output_json.get(name)
 
-        if name in output_json:
-            value = str(output_json[name])
+        if required and (value is None or str(value).strip() == ""):
+            errors.append(f"Missing required field: {name}")
+            continue
 
-            if "maxLength" in field:
-                value = value[:field["maxLength"]]
-
+        if value is not None:
+            value = str(value).strip()
+            if max_length and len(value) > max_length:
+                value = value[:max_length]
             validated[name] = value
 
-    return validated
+    return {"validated_content": validated, "errors": errors}

@@ -1,0 +1,54 @@
+# =========================
+# Python
+# =========================
+backend/venv/
+backend/__pycache__/
+backend/app/**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# =========================
+# Node / Next.js
+# =========================
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+
+# =========================
+# Environment files
+# =========================
+.env
+.env.local
+
+# =========================
+# Uploads / Generated files
+# =========================
+uploads/*
+backend/uploads/*
+!uploads/.gitkeep
+!backend/uploads/.gitkeep
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# macOS
+# =========================
+.DS_Store
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Misc
+# =========================
+*.sqlite3
+*.db

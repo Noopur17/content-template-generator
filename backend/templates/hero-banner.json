@@ -1,0 +1,10 @@
+{
+  "id": "hero-banner",
+  "name": "Hero Banner",
+  "description": "Large homepage banner with headline, subheadline, and CTA",
+  "fields": [
+    { "name": "headline", "type": "text", "required": true, "maxLength": 60 },
+    { "name": "subheadline", "type": "text", "required": true, "maxLength": 120 },
+    { "name": "cta", "type": "text", "required": true, "maxLength": 20 }
+  ]
+}

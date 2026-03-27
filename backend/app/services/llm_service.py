@@ -1,56 +1,76 @@
-import requests
-from app.core.config import OLLAMA_BASE_URL, OLLAMA_MODEL
+import json
+from openai import OpenAI
+from app.core.config import OPENAI_API_KEY, OPENAI_MODEL
 
-def generate_content(template: dict, prompt: str, tone: str, audience: str, asset_context: str | None = None):
+client = OpenAI(api_key=OPENAI_API_KEY)
+
+def generate_content(
+    template: dict,
+    prompt: str,
+    tone: str,
+    audience: str,
+    asset_context: str | None = None
+):
     fields = template.get("fields", [])
-    field_rules = "\n".join(
-        [
-            f"- {field['name']} (required={field.get('required', False)}, maxLength={field.get('maxLength', 100)})"
-            for field in fields
-        ]
-    )
+
+    schema_properties = {}
+    required_fields = []
+
+    for field in fields:
+        name = field["name"]
+        max_length = field.get("maxLength", 100)
+        required = field.get("required", False)
+
+        schema_properties[name] = {
+            "type": "string",
+            "description": f"{name} field with max length {max_length}"
+        }
+
+        if required:
+            required_fields.append(name)
 
     asset_text = asset_context if asset_context else "No asset context provided."
 
     system_prompt = f"""
-You are a structured content generator.
+You are a structured content generator for marketing content.
 
-Return ONLY valid raw JSON.
-Do not include markdown.
-Do not include explanations.
-Do not wrap output in triple backticks.
-
-Template Name: {template.get('name')}
-
-Fields:
-{field_rules}
+Generate concise, polished content for the selected template.
 
 Tone: {tone}
 Audience: {audience}
 Asset Context: {asset_text}
 
 Rules:
-1. Use exactly the field names provided.
-2. Respect all maxLength values.
-3. Generate polished marketing content.
-4. Return only one JSON object.
+1. Return only the required fields.
+2. Keep each field within the intended length.
+3. Do not include markdown.
+4. Do not include explanations.
 """
 
-    payload = {
-        "model": OLLAMA_MODEL,
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": prompt}
+    response = client.responses.create(
+        model=OPENAI_MODEL,
+        input=[
+            {
+                "role": "system",
+                "content": system_prompt
+            },
+            {
+                "role": "user",
+                "content": f"Template: {template.get('name')}\nUser prompt: {prompt}"
+            }
         ],
-        "stream": False
-    }
-
-    response = requests.post(
-        f"{OLLAMA_BASE_URL}/api/chat",
-        json=payload,
-        timeout=120
+        text={
+            "format": {
+                "type": "json_schema",
+                "name": "content_template_output",
+                "schema": {
+                    "type": "object",
+                    "properties": schema_properties,
+                    "required": required_fields,
+                    "additionalProperties": False
+                }
+            }
+        }
     )
-    response.raise_for_status()
 
-    data = response.json()
-    return data["message"]["content"]
+    return response.output_text

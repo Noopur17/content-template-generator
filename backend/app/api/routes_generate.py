@@ -17,6 +17,7 @@ class GenerateRequest(BaseModel):
 @router.post("/")
 def generate(req: GenerateRequest):
     template = get_template(req.template_id)
+
     if not template:
         raise HTTPException(status_code=404, detail="Template not found")
 
@@ -33,7 +34,10 @@ def generate(req: GenerateRequest):
     except json.JSONDecodeError:
         raise HTTPException(
             status_code=500,
-            detail={"message": "Model did not return valid JSON", "raw_output": raw_output}
+            detail={
+                "message": "Model did not return valid JSON",
+                "raw_output": raw_output
+            }
         )
 
     validation_result = validate_output(template, parsed_output)

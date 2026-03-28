@@ -1,0 +1,22 @@
+{
+  "template_id": "product_description",
+  "name": "Retail Product Description",
+  "description": "Generates structured retail product copy for ecommerce and CMS workflows.",
+  "fields": [
+    "title",
+    "short_description",
+    "long_description",
+    "bullets",
+    "seo_title",
+    "seo_description"
+  ],
+  "rules": {
+    "title_max_words": 12,
+    "short_description_max_words": 20,
+    "long_description_max_words": 120,
+    "bullets_count": 3,
+    "bullet_max_words": 10,
+    "seo_title_max_words": 14,
+    "seo_description_max_words": 24
+  }
+}

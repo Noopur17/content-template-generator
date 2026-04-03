@@ -14,7 +14,8 @@ def upload_asset(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
 
     return {
-        "filename": file.filename,
-        "file_path": file_path,
-        "content_type": file.content_type
-    }
+    "filename": file.filename,
+    "file_path": file_path,
+    "file_url": f"http://localhost:8001/uploads/{file.filename}",
+    "content_type": file.content_type
+}

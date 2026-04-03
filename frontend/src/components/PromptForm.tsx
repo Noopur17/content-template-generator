@@ -13,13 +13,15 @@ type Props = {
 
 export default function PromptForm(props: Props) {
   return (
-    <div className="card">
+    <div className="panel">
+      <h2 className="section-title">Content Inputs</h2>
+
       <div className="label">Prompt</div>
       <textarea
         className="textarea"
         value={props.prompt}
         onChange={(e) => props.onPromptChange(e.target.value)}
-        placeholder="Create homepage promotional content for a new lightweight running shoe."
+        placeholder="Create a retail product description for white low-top sneakers designed for everyday casual wear."
       />
 
       <div className="label">Tone</div>
@@ -44,12 +46,12 @@ export default function PromptForm(props: Props) {
         <option value="shoppers">Shoppers</option>
       </select>
 
-      <div className="label">Asset Context</div>
+      <div className="label">Product / Asset Description</div>
       <textarea
         className="textarea"
         value={props.assetContext}
         onChange={(e) => props.onAssetContextChange(e.target.value)}
-        placeholder="Optional image or video description"
+        placeholder="Example: white low-top sneakers with a clean minimalist design, lace-up closure, cushioned sole, and everyday casual style"
       />
 
       <button className="button" onClick={props.onSubmit} disabled={props.loading}>

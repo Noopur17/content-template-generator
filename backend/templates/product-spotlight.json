@@ -1,10 +1,25 @@
 {
   "id": "product-spotlight",
   "name": "Product Spotlight",
-  "description": "Product marketing content with title, description, and CTA",
+  "description": "Highlight a product with title, description and CTA",
   "fields": [
-    { "name": "title", "type": "text", "required": true, "maxLength": 60 },
-    { "name": "description", "type": "text", "required": true, "maxLength": 200 },
-    { "name": "cta", "type": "text", "required": true, "maxLength": 20 }
+    {
+      "name": "title",
+      "type": "text",
+      "required": true,
+      "maxLength": 60
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "required": true,
+      "maxLength": 150
+    },
+    {
+      "name": "cta",
+      "type": "text",
+      "required": true,
+      "maxLength": 20
+    }
   ]
 }

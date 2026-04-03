@@ -5,18 +5,22 @@ type Props = {
   onClick: () => void;
 };
 
-export default function TemplateCard({ name, description, selected, onClick }: Props) {
+export default function TemplateCard({
+  name,
+  description,
+  selected,
+  onClick,
+}: Props) {
   return (
     <div
-      className="card"
+      className={`card template-card ${selected ? "selected" : ""}`}
       onClick={onClick}
-      style={{
-        cursor: "pointer",
-        border: selected ? "2px solid #111" : "1px solid #e5e7eb"
-      }}
     >
-      <h3>{name}</h3>
-      <p>{description || "No description available"}</p>
+      <div className="badge">{selected ? "Selected" : "Template"}</div>
+      <h3 className="template-name">{name}</h3>
+      <p className="template-description">
+        {description || "No description available"}
+      </p>
     </div>
   );
 }

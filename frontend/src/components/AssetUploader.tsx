@@ -14,7 +14,7 @@ export default function AssetUploader({ onUploadComplete }: Props) {
 
     const response = await fetch("http://localhost:8001/assets/upload", {
       method: "POST",
-      body: formData
+      body: formData,
     });
 
     const data = await response.json();
@@ -22,9 +22,12 @@ export default function AssetUploader({ onUploadComplete }: Props) {
   };
 
   return (
-    <div className="card">
-      <div className="label">Upload Asset</div>
+    <div className="panel">
+      <h2 className="section-title">Upload Asset</h2>
       <input className="input" type="file" onChange={handleChange} />
+      <p className="upload-note">
+        Add an image or media asset to support content generation and preview.
+      </p>
     </div>
   );
 }

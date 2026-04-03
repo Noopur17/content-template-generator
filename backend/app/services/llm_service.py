@@ -29,22 +29,28 @@ def generate_content(
         if required:
             required_fields.append(name)
 
-    asset_text = asset_context if asset_context else "No asset context provided."
+    asset_text = asset_context.strip() if asset_context else ""
 
     system_prompt = f"""
-You are a structured content generator for marketing content.
+You are a structured retail and marketing content generator.
 
-Generate concise, polished content for the selected template.
+Generate content only for the product explicitly described by the user.
 
 Tone: {tone}
 Audience: {audience}
-Asset Context: {asset_text}
+
+Product / Asset Description:
+{asset_text if asset_text else "No product description provided."}
 
 Rules:
-1. Return only the required fields.
-2. Keep each field within the intended length.
-3. Do not include markdown.
-4. Do not include explanations.
+1. Use the product / asset description as the main source of truth for the product type.
+2. Do not invent a different product category.
+3. If the description says shoes or sneakers, generate shoe content only.
+4. If the description says apparel, generate apparel content only.
+5. Do not output content for a yoga mat, bottle, bag, or any unrelated product unless the user explicitly describes that product.
+6. Return only the required JSON fields.
+7. Do not include markdown.
+8. Do not include explanations.
 """
 
     response = client.responses.create(

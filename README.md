@@ -1,17 +1,3 @@
-Absolutely. Here is a **clean, polished, portfolio-level README** you can directly copy-paste into your repo.
-
-This version is:
-
-* recruiter-friendly
-* EB1/profile strong
-* clear + structured
-* demo-ready
-
----
-
-# 🚀 Copy-Paste README
-
-```md
 # 🚀 Content Template Generator
 
 AI-powered platform for generating **structured marketing content** using predefined templates and local LLMs (Ollama).
